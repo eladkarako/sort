@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- ☆☆☆Unicode Is Fun☆☆☆ -->
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta http-equiv="Content-Type"    content="text/html;charset=UTF-8"/>
+<meta name="viewport"              content="width=device-width,height=device-height,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<style media="all">
+html,body,textarea{
+  border:                            1px solid gray;
+  outline:                         none transparent;
+  border-collapse:                         collapse;
+  width:                                       100%;
+  height:                                      100%;
+  padding:                                        0;
+  margin:                                         0;
+  border-spacing:                                 0;
+  resize:                                      none;
+  text-size-adjust:                            auto;
+  whitespace:                              pre-line;
+  box-sizing:                            border-box;
+  font:               30pt 'Courier New', monospace;
+  background-origin:                     border-box;
+  background:                      none transparent;
+  display:                                    block;
+}
+html,body{ overflow:    hidden;                      }
+textarea{  overflow-x:  hidden;   overflow-y:scroll; }
+
+::placeholder, ::-webkit-input-placeholder{ /*just a nice placeholder styling*/
+  color:                                  lightgray;
+  font-style:                                italic;
+}
+</style>
+<title>Sort&Unique</title>
+</head>
+<body><textarea placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
+<script>
+  (function(window,document,textarea){ "use strict";
+    textarea.placeholder = "line #1\nline #2\n\line...";
+    textarea.onkeyup     = function(ev){
+                            if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
+                            if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
+                            if(true === textarea.is_working)                     return true;               //do nothing (allow key event)
+                            ev.cancelBubble = true;
+                            ("function" === typeof ev.preventDefault)  && (ev.preventDefault());
+                            ("function" === typeof ev.stopPropagation) && (ev.stopPropagation());
+                            textarea.is_working = true;                                                     //singleton lock
+
+                            textarea.value = (function(tmp){
+                                               tmp = textarea.value.replace(/[\r\n]+/g,"\n").split("\n");   //unify the new-line as EOL (Win/*nix/MacOS)
+                                               tmp = tmp.reduce(function(carry,item){                       //uniquify all lines.
+                                                                  carry[item] = "";
+                                                                  return carry;
+                                                                },{});
+                                               tmp = Object.keys(tmp).sort();                               //plain sort, browser implementation.
+                                               return tmp.join("\n");                                       //result.
+                                             }());
+
+                            textarea.is_working = false;                                      //singleton release
+                            return false;                                                     //arrived here? [CTRL]+[ENTER] was pressed, disable the event so no additional new-line will be added...
+                           };
+  }(
+   self
+  ,self.document
+  ,self.document.querySelector("textarea")
+  ));
+</script>
+</html>
