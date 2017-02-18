@@ -49,11 +49,21 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
 
                             textarea.value = (function(tmp){
                                                tmp = textarea.value.replace(/[\r\n]+/g,"\n").split("\n");   //unify the new-line as EOL (Win/*nix/MacOS)
-                                               tmp = tmp.reduce(function(carry,item){                       //uniquify all lines.
-                                                                  carry[item] = "";
-                                                                  return carry;
-                                                                },{});
-                                               tmp = Object.keys(tmp).sort();                               //plain sort, browser implementation.
+                                               tmp = (function(){
+                                                       tmp = tmp.reduce(function(carry,item){                       //uniquify all lines.
+                                                                          carry[item] = "";
+                                                                          return carry;
+                                                                        },{});
+                                                       tmp = Object.keys(tmp);                                      //flat things, unique-complete.
+                                                       return tmp;
+                                                     }());
+
+                                               if("object" === typeof window.Intl && "object" === typeof window.Intl.Collator){
+                                                 tmp = tmp.sort(new Intl.Collator(undefined, {numeric: true}).compare);    //natural sort, 1<2<10<20
+                                               }else{
+                                                 tmp = tmp.sort();                                                         //plain sort, browser implementation.
+                                               }
+
                                                return tmp.join("\n");                                       //result.
                                              }());
 
