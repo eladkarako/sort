@@ -37,6 +37,23 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
 <body><textarea placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
 <script>
   (function(window,document,textarea){ "use strict";
+
+    function naturalCompare(a, b) {
+        var ax = [], bx = [];
+
+        a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
+        b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
+        
+        while(ax.length && bx.length) {
+            var an = ax.shift();
+            var bn = bx.shift();
+            var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+            if(nn) return nn;
+        }
+
+        return ax.length - bx.length;
+    }
+
     textarea.placeholder = "line #1\nline #2\n\line...";
     textarea.onkeyup     = function(ev){
                             if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
@@ -58,11 +75,7 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
                                                        return tmp;
                                                      }());
 
-                                               if("object" === typeof window.Intl && "object" === typeof window.Intl.Collator){
-                                                 tmp = tmp.sort(new Intl.Collator(undefined, {numeric: true}).compare);    //natural sort, 1<2<10<20
-                                               }else{
-                                                 tmp = tmp.sort();                                                         //plain sort, browser implementation.
-                                               }
+                                               tmp = tmp.sort(naturalCompare);
 
                                                return tmp.join("\n");                                       //result.
                                              }());
