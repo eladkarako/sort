@@ -55,7 +55,7 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
     }
 
     textarea.placeholder = "line #1\nline #2\n\line...";
-    textarea.onkeyup     = function(ev){
+    textarea.onblur     = function(ev){
                             //if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
                             //if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
                             //if(true === textarea.is_working)                     return true;               //do nothing (allow key event)
