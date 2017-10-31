@@ -56,13 +56,13 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
 
     textarea.placeholder = "line #1\nline #2\n\line...";
     textarea.onkeyup     = function(ev){
-                            if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
-                            if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
-                            if(true === textarea.is_working)                     return true;               //do nothing (allow key event)
+                            //if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
+                            //if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
+                            //if(true === textarea.is_working)                     return true;               //do nothing (allow key event)
                             ev.cancelBubble = true;
-                            ("function" === typeof ev.preventDefault)  && (ev.preventDefault());
+                            //("function" === typeof ev.preventDefault)  && (ev.preventDefault());
                             ("function" === typeof ev.stopPropagation) && (ev.stopPropagation());
-                            textarea.is_working = true;                                                     //singleton lock
+                            //textarea.is_working = true;                                                     //singleton lock
 
                             textarea.value = (function(tmp){
                                                tmp = textarea.value.replace(/[\r\n]+/g,"\n").split("\n");   //unify the new-line as EOL (Win/*nix/MacOS)
@@ -80,7 +80,7 @@ textarea{  overflow-x:  hidden;   overflow-y:scroll; }
                                                return tmp.join("\n");                                       //result.
                                              }());
 
-                            textarea.is_working = false;                                      //singleton release
+                            //textarea.is_working = false;                                      //singleton release
                             return false;                                                     //arrived here? [CTRL]+[ENTER] was pressed, disable the event so no additional new-line will be added...
                            };
   }(
