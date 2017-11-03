@@ -1,4 +1,6 @@
-<h1>Sort&Unique</h1>
+<h1><a href="https://eladkarako.github.io/sort/">Sort&Unique</a></h1>
+
+<a href="https://eladkarako.github.io/sort/">eladkarako.github.io/sort/</a>
 
 A Simplified Online-List Sorter And Unique'ify,
 Fully Compatible With Mobile-Devices.
