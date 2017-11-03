@@ -1,92 +1,149 @@
 <!doctype html>
 <!-- ☆☆☆Unicode Is Fun☆☆☆ -->
-<html>
+<html encoding="UTF-8" charset="UTF-8" dir="ltr" lang="en-US" language="English" tabindex="-1">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<meta http-equiv="Content-Type"    content="text/html;charset=UTF-8"/>
-<meta name="viewport"              content="width=device-width,height=device-height,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type"     content="text/html;charset=UTF-8"/>
+<meta name="viewport"               content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,minimal-ui"/>
+<meta http-equiv="Cache-control"    content="public,max-age=1800,max-stale,stale-while-revalidate=86400,stale-if-error=259200" rem="max-age=30minutes"/>
+<meta name="robots"                 content="archive,follow,imageindex,index,odp,snippet,translate"/>
+<meta http-equiv="X-UA-Compatible"  content="IE=edge,chrome=1"/>
+<meta name="fragment"               content="!"/>
+<meta name="HandheldFriendly"                       content="True"/>
+<meta name="MSThemeCompatible"                      content="no"/>
+<meta name="apple-mobile-web-app-capable"           content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style"  content="translucent black"/>
+<meta name="msapplication-navbutton-color"          content="translucent black"/>
+<meta name="format-detection"                       content="telephone=no,date=no,address=no,email=no,url=no"/>
+<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+<meta name="mssmarttagspreventparsing"              content="true"/>
+<meta name="theme-color"                            content="#b1cff4"/>
+<meta http-equiv="imagetoolbar"                     content="no"/>
+<meta http-equiv="cleartype"                        content="on"/>
+<meta name="description"                            content="Paste any amount of lines, and either click the button or CTRL+ENTER to natural-sort and unique the lines, the content is automatically copied to your clipboard for your convenience. All line ending (EOL) are normalized to linux-EOL (a.k.a \n -or LF)."/>
+<meta property="keywords"                           content="sort,unique,tool,online-tool,מיון,סינון כפילויות,remove-duplicates,copy,clipboard"/>
+<meta name="msapplication-starturl"                 content="https://eladkarako.github.io/sort/"/>
+<meta property="og:url"                             content="https://eladkarako.github.io/sort/"/>
+<meta name="identifier-URL"                         content="https://eladkarako.github.io/sort/"/>
+<link rel="canonical"                               href="https://eladkarako.github.io/sort/"/>
+<meta name="creation_date"                          content="2017-10-03T23:03:00Z"/>
+<meta name="page-datetime"                          content="2017-10-03T23:03:00Z"/>
 <style media="all">
-html,body,textarea{
-  border:                            1px solid gray;
-  outline:                         none transparent;
-  border-collapse:                         collapse;
-  width:                                       100%;
-  height:                                      100%;
-  padding:                                        0;
-  margin:                                         0;
-  border-spacing:                                 0;
-  resize:                                      none;
-  text-size-adjust:                            auto;
-  whitespace:                              pre-line;
-  box-sizing:                            border-box;
-  font:               30pt 'Courier New', monospace;
-  background-origin:                     border-box;
-  background:                      none transparent;
-  display:                                    block;
-}
-html,body{ overflow:    hidden;                      }
-textarea{  overflow-x:  hidden;   overflow-y:scroll; }
 
-::placeholder, ::-webkit-input-placeholder{ /*just a nice placeholder styling*/
+               ::placeholder
+,               :placeholder-shown
+,     ::-o-input-placeholder
+,    ::-ms-input-placeholder
+,   ::-moz-input-placeholder
+,::-webkit-input-placeholder{
   color:                                  lightgray;
   font-style:                                italic;
 }
+
+html,[button],textarea{direction:ltr;}
+html,textarea{font-size:20pt; font-family: 'Twitter Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'EmojiOne Color', 'Samsung Color Emoji', 'Apple Color Emoji', 'Noto Emoji', 'EmojiOne', 'Noto Sans Symbols2', 'Noto Sans Symbols', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Mono', 'Droid Sans Mono', 'Courier New', 'Miriam Fixed', monospace;}
+body{overflow:visible;}
+html{overflow:auto; word-break:normal; overflow-wrap:break-word; word-wrap:break-word;}
+textarea{overflow:scroll; word-break:normal; overflow-wrap:normal; word-wrap:normal;}
+
+html,body{height:100%;}
+html,body,[button],textarea{display:block; margin:0px; padding:0px; resize:none;}
+
+html,body,[button],[button]:active,[button]:focus,textarea,textarea:active,textarea:focus{border:1px solid gray; outline:1px none transparent;}
+
+html,body,[button],textarea{
+  box-sizing:        border-box;
+  background-origin: border-box;
+  background-clip:   border-box;
+  border-spacing:    0px;
+  border-collapse:   collapse;
+}
+
+[button],textarea{width:100%;}
+[button]{   height:10%;}
+textarea{height:90%;}
+
+[button]{
+ cursor:           pointer;
+ background-color: lightgray;
+ background-image: linear-gradient(white, lightgray);
+ text-align:       center;
+ overflow:         hidden;
+ text-overflow:    clip;
+ font-size:        calc(4pt + 4vh);
+}
+[button]:hover{ background-image:linear-gradient(lightgray,white);}
+[button]:active{background-image:linear-gradient(gray,white);}
 </style>
+
 <title>Sort&Unique</title>
 </head>
-<body><textarea placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
-<script>
-  (function(window,document,textarea){ "use strict";
+<body tabindex="-1">
+<div button tabindex="2">Sort&amp;Unique</div><textarea autofocus="true" tabindex="1" placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
+<script type="text/javascript">
+  var button,textarea;
 
-    function naturalCompare(a, b) {
-        var ax = [], bx = [];
+  button   = document.getElementsByTagName("div")[0];
+  textarea = document.getElementsByTagName("textarea")[0];
 
-        a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
-        b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
-        
-        while(ax.length && bx.length) {
-            var an = ax.shift();
-            var bn = bx.shift();
-            var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
-            if(nn) return nn;
-        }
+  if("undefined" === typeof button)   return;
+  if("undefined" === typeof textarea) return;
 
-        return ax.length - bx.length;
-    }
 
-    textarea.placeholder = "line #1\nline #2\n\line...";
-    textarea.onblur     = function(ev){
-                            //if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
-                            //if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
-                            //if(true === textarea.is_working)                     return true;               //do nothing (allow key event)
-                            ev.cancelBubble = true;
-                            //("function" === typeof ev.preventDefault)  && (ev.preventDefault());
-                            ("function" === typeof ev.stopPropagation) && (ev.stopPropagation());
-                            //textarea.is_working = true;                                                     //singleton lock
+  function naturalCompare(a, b) {
+      var ax = [], bx = [];
 
-                            textarea.value = (function(tmp){
-                                               tmp = textarea.value.replace(/[\r\n]+/g,"\n").split("\n");   //unify the new-line as EOL (Win/*nix/MacOS)
-                                               tmp = (function(){
-                                                       tmp = tmp.reduce(function(carry,item){                       //uniquify all lines.
-                                                                          carry[item] = "";
-                                                                          return carry;
-                                                                        },{});
-                                                       tmp = Object.keys(tmp);                                      //flat things, unique-complete.
-                                                       return tmp;
-                                                     }());
+      a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
+      b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
 
-                                               tmp = tmp.sort(naturalCompare);
+      while(ax.length && bx.length) {
+          var an = ax.shift();
+          var bn = bx.shift();
+          var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+          if(nn) return nn;
+      }
 
-                                               return tmp.join("\n");                                       //result.
-                                             }());
+      return ax.length - bx.length;
+  }
 
-                            //textarea.is_working = false;                                      //singleton release
-                            return false;                                                     //arrived here? [CTRL]+[ENTER] was pressed, disable the event so no additional new-line will be added...
-                           };
-  }(
-   self
-  ,self.document
-  ,self.document.querySelector("textarea")
-  ));
+
+
+
+  function click_handler(ev){
+    var lines = textarea.value.replace(/[\r\n]+/gm,"\n").split("\n")
+       ,tmp   = {}
+       ,i
+       ;
+
+    for(i=0; i<lines.length; i++)
+      tmp[ lines[i] ] = "";
+
+    lines = Object.keys(tmp);
+
+    lines = lines.sort(naturalCompare);
+
+    textarea.value = lines.join("\n");
+    
+    try{
+    window.getSelection().removeAllRanges();
+    textarea.select();
+    document.execCommand("copy");
+    }catch(err){}
+
+    textarea.focus();
+  }
+
+
+  button.onclick     = click_handler;
+
+
+  function keydown_handler(ev){
+    if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
+    if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
+    click_handler();
+  }
+
+  textarea.onkeydown = click_handler;
+
 </script>
 </html>
