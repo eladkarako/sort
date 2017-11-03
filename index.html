@@ -81,6 +81,7 @@ textarea{height:90%;}
 <body tabindex="-1">
 <div button tabindex="2">Sort&amp;Unique</div><textarea autofocus="true" tabindex="1" placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
 <script type="text/javascript">
+(function(){ "use strict";
   var button,textarea;
 
   button   = document.getElementsByTagName("div")[0];
@@ -144,6 +145,6 @@ textarea{height:90%;}
   }
 
   textarea.onkeydown = click_handler;
-
+}());
 </script>
 </html>
