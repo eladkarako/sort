@@ -125,12 +125,15 @@ textarea{height:90%;}
 
     textarea.value = lines.join("\n");
     
-    try{
     window.getSelection().removeAllRanges();
+    try{
     textarea.select();
     document.execCommand("copy");
     }catch(err){}
 
+    window.getSelection().removeAllRanges();
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = 0;
     textarea.focus();
   }
 
@@ -139,12 +142,11 @@ textarea{height:90%;}
 
 
   function keydown_handler(ev){
-    if(false === ev.ctrlKey)                             return true;               //do nothing (allow key event)
-    if(false === (13 === ev.keyCode || 13 === ev.which)) return true;               //do nothing (allow key event)
-    click_handler();
+    if(ev.ctrlKey && (13 === ev.keyCode || 13 === ev.which))
+      click_handler();
   }
 
-  textarea.onkeydown = click_handler;
+  textarea.onkeydown = keydown_handler;
 }());
 </script>
 </html>
