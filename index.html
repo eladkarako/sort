@@ -29,7 +29,9 @@
 <meta name="creation_date"                          content="2017-10-03T23:03:00Z"/>
 <meta name="page-datetime"                          content="2017-10-03T23:03:00Z"/>
 <style media="all">
-
+*{
+  vertical-align: middle;
+}
                ::placeholder
 ,               :placeholder-shown
 ,     ::-o-input-placeholder
@@ -41,13 +43,13 @@
 }
 
 html,[button],textarea{direction:ltr;}
-html,textarea{font-size:20pt; font-family: 'Twitter Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'EmojiOne Color', 'Samsung Color Emoji', 'Apple Color Emoji', 'Noto Emoji', 'EmojiOne', 'Noto Sans Symbols2', 'Noto Sans Symbols', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Mono', 'Droid Sans Mono', 'Courier New', 'Miriam Fixed', monospace;}
+html,textarea{font-size:18pt; font-size:calc(12pt + 3vmin); font-family: 'Twitter Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'EmojiOne Color', 'Samsung Color Emoji', 'Apple Color Emoji', 'Noto Emoji', 'EmojiOne', 'Noto Sans Symbols2', 'Noto Sans Symbols', 'Segoe UI Symbol', 'Apple Symbols', 'Noto Mono', 'Droid Sans Mono', 'Courier New', 'Miriam Fixed', monospace;}
 body{overflow:visible;}
 html{overflow:auto; word-break:normal; overflow-wrap:break-word; word-wrap:break-word;}
 textarea{overflow:scroll; word-break:normal; overflow-wrap:normal; word-wrap:normal;}
 
 html,body{height:100%;}
-html,body,[button],textarea{display:block; margin:0px; padding:0px; resize:none;}
+html,body,textarea{display:block; margin:0px; padding:0px; resize:none;}
 
 html,body,[button],[button]:active,[button]:focus,textarea,textarea:active,textarea:focus{border:1px solid gray; outline:1px none transparent;}
 
@@ -59,9 +61,12 @@ html,body,[button],textarea{
   border-collapse:   collapse;
 }
 
-[button],textarea{width:100%;}
+textarea{width:100%;}
+[button][sortunique],[button][save]{width:50%;}
 [button]{   height:10%;}
 textarea{height:90%;}
+
+[button][save],[button][save]:visited{color:inherit; text-decoration: none;}
 
 [button]{
  cursor:           pointer;
@@ -70,25 +75,37 @@ textarea{height:90%;}
  text-align:       center;
  overflow:         hidden;
  text-overflow:    clip;
+ font-size:        8pt;
  font-size:        calc(4pt + 4vh);
 }
 [button]:hover{ background-image:linear-gradient(lightgray,white);}
+[button]:focus{ background-image:linear-gradient(lightgray,white);}
 [button]:active{background-image:linear-gradient(gray,white);}
+
+[button]{position:absolute; top:0; bottom:10%; width:50%; height:10%;}
+[button][sortunique]{left:0; right:50%;}
+[button][save]{left:50%; right:100%;}
+
+textarea{position:absolute; top:10%; bottom:100%; width:100%; height:90%; left:0; right:100%;}
+
+textarea:focus{ background-color:rgb(243,243,193);}
 </style>
 
 <title>Sort&Unique</title>
 </head>
 <body tabindex="-1">
-<div button tabindex="2">Sort&amp;Unique</div><textarea autofocus="true" tabindex="1" placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
+<span button sortunique tabindex="2" title="click: sort+unique+copy to clipboard">Sort&amp;Unique</span><a button save download="file.txt" type="text/plain" href="data:text/plain;charset=UTF8;base64," tabindex="3" title="click: download whatever current text you have here, as a plain-text file (with linux EOL)">Save</a><textarea autofocus="true" tabindex="1" placeholder="line #1..." spellcheck="true" autocomplete="on"></textarea></body>
 <script type="text/javascript">
 (function(){ "use strict";
-  var button,textarea;
+  var button_sortunique,button_save,textarea;
 
-  button   = document.getElementsByTagName("div")[0];
-  textarea = document.getElementsByTagName("textarea")[0];
+  button_sortunique = document.querySelector("[button][sortunique]");
+  button_save       = document.querySelector("[button][save]");
+  textarea = document.querySelector("textarea");
 
-  if("undefined" === typeof button)   return;
-  if("undefined" === typeof textarea) return;
+  if(null === typeof button_sortunique) return;
+  if(null === typeof button_save)       return;
+  if(null === typeof textarea)          return;
 
 
   function naturalCompare(a, b) {
@@ -138,7 +155,7 @@ textarea{height:90%;}
   }
 
 
-  button.onclick     = click_handler;
+  button_sortunique.onclick     = click_handler;
 
 
   function keydown_handler(ev){
@@ -147,6 +164,13 @@ textarea{height:90%;}
   }
 
   textarea.onkeydown = keydown_handler;
+  
+  
+  function mousedown_handler(ev){
+    button_save.href = "data:text/plain;charset=UTF8;base64," + self.btoa( unescape(encodeURIComponent(textarea.value)) );
+  }
+  
+  button_save.onmousedown = mousedown_handler;
 }());
 </script>
 </html>
