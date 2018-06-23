@@ -25,4 +25,46 @@ Notes:
 
 <br/>
 
-<a target="_blank" href="https://paypal.me/e1adkarak0" rel="nofollow"><img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal Donation"></a>
+<hr/>
+
+Extractors. - For Developers
+
+Say your lines are a bit more complex than just a line of text, 
+for example - each line looks like this: <code>pref("accelerometer.enabled", false);</code> (<a href="https://hg.mozilla.org/releases/mozilla-release/file/tip/modules/libpref/init/all.js">Mozilla preferences</a>), 
+where the actual "value" is the one wrapped with <code>"</code>-character, 
+if you'll sort the lines eventually you'll sort the <code>, false);</code> part as well against actual data...
+...for this you better provide an improved "sorter function" - you can base your sorter-program on the native-sort one, 
+but add an "extractor" before the actual work:
+
+```js
+function extractor(a){
+  return a.replace(/[^\"]+\"([^\"]+)\".*$/m, "$1");
+}
+
+function naturalCompare(a, b) {
+ a = extractor(a);
+ b = extractor(b);
+      var ax = [], bx = [];
+
+      a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
+      b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
+
+      while(ax.length && bx.length) {
+          var an = ax.shift();
+          var bn = bx.shift();
+          var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+          if(nn) return nn;
+      }
+
+      return ax.length - bx.length;
+  }
+
+document.querySelector('textarea').value = document.querySelector('textarea')
+                                                   .value
+                                                   .replace(/[\r\n]+/gm, "\n")
+                                                   .split("\n")
+                                                   .sort(naturalCompare)
+                                                   .join("\n")
+                                                   ;
+```
+
