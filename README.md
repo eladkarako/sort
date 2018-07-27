@@ -37,34 +37,43 @@ if you'll sort the lines eventually you'll sort the <code>, false);</code> part 
 but add an "extractor" before the actual work:
 
 ```js
-function extractor(a){
-  return a.replace(/[^\"]+\"([^\"]+)\".*$/m, "$1");
-}
+function natural_compare(a, b) {
+  var ax = [], bx = [];
 
-function naturalCompare(a, b) {
- a = extractor(a);
- b = extractor(b);
-      var ax = [], bx = [];
-
-      a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
-      b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
-
-      while(ax.length && bx.length) {
-          var an = ax.shift();
-          var bn = bx.shift();
-          var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
-          if(nn) return nn;
-      }
-
-      return ax.length - bx.length;
+  if("undefined" !== typeof natural_compare.extractor){ //optional. avoid comparing the whole value by extracting part of it (part the has more meaning then the whole line)
+    a = extractor(a);
+    b = extractor(b);
   }
 
-document.querySelector('textarea').value = document.querySelector('textarea')
-                                                   .value
-                                                   .replace(/[\r\n]+/gm, "\n")
-                                                   .split("\n")
-                                                   .sort(naturalCompare)
-                                                   .join("\n")
-                                                   ;
+  a.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
+  b.replace(/(\d+)|(\D+)/g, function(_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
+
+  while(ax.length && bx.length) {
+    var an,bn,nn;
+    an = ax.shift();
+    bn = bx.shift();
+    nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+    if(0 !== nn) return nn;
+  }
+
+  return ax.length - bx.length;
+}
+
+
+//natural_compare.extractor = undefined;    //by default.
+
+natural_compare.extractor = function(s){
+                              s = s.replace(/[^\"]+\"([^\"]+)\".*$/m, "$1");  //leave just the first "..." block - Android build.pref (missing? keep whole-line).
+                              return s;
+                            };
+
+//-------------------------
+
+var textarea = document.querySelector('textarea')
+textarea.value = textarea.value.replace(/[\r\n]+/gm, "\n")
+                               .split("\n")
+                               .sort(natural_compare)
+                               .join("\n")
+                               ;
 ```
 
