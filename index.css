@@ -1,0 +1,82 @@
+html,body,textarea{
+  height       : 100%;
+  width        : 100%;
+  padding      : 0pt;
+  margin       : 0pt;
+  display      : block;
+  position     : absolute;
+  left         : 0;
+  top          : 0;
+  border          : 0px none transparent;
+  outline         : 0px none transparent;
+  box-sizing      : border-box;
+  touch-action    : manipulation;
+  border-collapse : collapse;
+  resize          : none;
+}
+textarea{
+  border          : 3pt dashed gray;
+  padding         : 2pt;
+  overflow        : scroll;
+}
+html{
+  font-size   : 20pt;
+  font-family : 'Courier New', monospace;
+}
+body,textarea{
+  font-size   : inherit;
+  font-family : inherit;
+}
+textarea{
+  background-color:rgb(255,255,224);
+}
+
+textarea::placeholder {
+  padding-left   : 12pt;
+  font-size      : 10pt;
+  color          : gray;
+  opacity        : 0.7;
+  font-style     : italic;
+  letter-spacing : .5pt;
+  word-spacing   : 0.5pt;
+
+}
+
+/*
+html:before{
+  content    : attr(data-placeholder);
+
+  opacity    : 0.7;
+  display    : block;
+  position   : relative;
+  right      : 0;
+  top        : 0;
+  z-index    : 99;
+  
+  font-size  : 6pt;
+  color      : gray;
+  font-style : italic;
+  
+  letter-spacing : .5pt;
+  word-spacing   : 0.5pt;
+  white-space    : pre;
+  overflow       : hidden;
+  margin-left    : 150pt;
+
+  pointer-events  : none;
+  touch-action    : none;
+}
+*/
+
+.wrap-lines-ON{
+  white-space        : pre;
+  overflow-wrap      : break-word;
+  -webkit-line-break : after-white-space;
+}
+/*
+.wrap-lines-OFF{
+  white-space        : pre-wrap;
+  overflow-wrap      : break-word;
+  -webkit-line-break : unset;
+}
+*/
