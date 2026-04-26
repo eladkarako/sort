@@ -37,9 +37,10 @@ notes:
 <meta name="author"                        content="Elad Karako"                      />
 <title>Sort&Unique</title>
 
-<link rel="stylesheet"                     href="index.css"   type="text/css" charset="UTF-8" media="all" crossorigin="anonymous" />
-<link rel="icon"                           href="favicon.ico" type="image/x-icon"     />
-<link rel="shortcut icon"                  href="favicon.ico" type="image/x-icon"     />
+<link rel="stylesheet"                     href="index.css"   type="text/css"          crossorigin="anonymous" charset="UTF-8" media="all"  />
+<link rel="preload"                        href="index.js"    type="text/javascript"   crossorigin="anonymous" charset="UTF-8" as="script"  />
+<link rel="icon"                           href="favicon.ico" type="image/x-icon"      crossorigin="anonymous" />
+<link rel="shortcut icon"                  href="favicon.ico" type="image/x-icon"      crossorigin="anonymous" />
 
 <!-- hidden from BODY, but still in DOM ... --->
 <input id="opener"     charset="UTF-8" type="file" accept="*" />
@@ -56,7 +57,7 @@ notes:
 
 4. ALT+/      - sort each line based on ' ' splitter.
 
-3. ALT+J      - beautify JSON (as is). 
+3. ALT+J      - beautify JSON (supports relaxed syntax)
 4. ALT+K      - JSON deep sort + beautify (note: null, [], {}, if any - will be placed last). 
 
 5. ALT+L      - clear textarea. 
