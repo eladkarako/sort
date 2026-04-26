@@ -286,7 +286,8 @@ const keycodes = {
 
 function key_handler(ev){
   console.log(ev);
-  const is_match = (true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines
+  const is_match = (true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_RETURN) //CTRL+ENTER  sort lines
+                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_COMMA)  //ALT+,       each line first, using  ',' as separator, then sort lines
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
@@ -359,7 +360,8 @@ function key_handler(ev){
 
 
 function early_prevent_default(ev){ //potentially prevents browser or OS functionality related to the key, while still allow the event to continue. done very early. using capture (window get first event then it bubbles down until it reaches the textarea). the actual event keyup will be used the textarea, as a way to delay the whole event. none of the hooks is passive to be able to prevent default.
-  const is_match = (true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines
+  const is_match = (true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_RETURN) //CTRL+ENTER  sort lines
+                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_COMMA)  //ALT+,       each line first, using  ',' as separator, then sort lines
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
