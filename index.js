@@ -260,13 +260,13 @@ function key_handler(ev){
     console.log("no match for key combination");
     return true;
   }
+  
+  ev.preventDefault();
+  ev.cancelBubble = true;
+  ev.stopPropagation();
+  ev.stopImmediatePropagation();
 
   console.log("[INFO] functionality key",ev);
-  
-  //ev.cancelBubble = true;
-  //ev.preventDefault();
-  //ev.stopPropagation();
-  //ev.stopImmediatePropagation();
 
   switch (ev.keyCode) {
     case keycodes.DOM_VK_RETURN:  //Enter
@@ -344,5 +344,5 @@ self.document.addEventListener("keyup",     early_prevent_default , {capture:tru
 self.document.addEventListener("keypress",  early_prevent_default , {capture:true, passive:false, once:false});
 */
 
-textarea.addEventListener("keydown",  key_handler , {capture:false, passive:true, once:false});
+textarea.addEventListener("keydown",  key_handler , {capture:false, passive:false, once:false});
 
