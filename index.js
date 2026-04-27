@@ -189,7 +189,7 @@ function json_beautify(is_deep_sort){
   console.log(textarea.value,json);
 
   json = true === is_deep_sort ? deep_sort(json) : json;
-  json = JSON5.stringify(json, null, 2)
+  json = JSON.stringify(json, null, 2)
               .replace(/,[\r\n] /g, "\r\n ,")
               .replace(/ *(,( +))/g,"$2,")
               ;
