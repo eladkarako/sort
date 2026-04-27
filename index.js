@@ -243,17 +243,32 @@ const keycodes = {
 
 function key_handler(ev){
   console.log(ev);
-  const is_match = (true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_RETURN) //CTRL+ENTER  sort lines
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
+  const is_match = (true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_RETURN) //CTRL+ENTER  (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_COMMA)  //ALT+,       each line first, using  ',' as separator, then sort lines
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_COMMA)  //CTRL+,      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines
-                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines (same)
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_O)      //CTRL+O      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_S)      //ALT+S       save textarea value to text file and download it
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_S)      //CTRL+S      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_J)      //ALT+J       json beautify (as is)
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_J)      //CTRL+J      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_K)      //ALT+K       json deep sort + beautify
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_K)      //CTRL+K      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_L)      //ALT+L       clear textarea
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_L)      //CTRL+L      (same)
+
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_W)      //ALT+W       toggle visual line-wrap-break
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_W)      //CTRL+W      (same)
        ;
 
   if(false === is_match){
