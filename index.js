@@ -247,6 +247,7 @@ function key_handler(ev){
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_COMMA)  //ALT+,       each line first, using  ',' as separator, then sort lines
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines (same)
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_S)      //ALT+S       save textarea value to text file and download it
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_J)      //ALT+J       json beautify (as is)
