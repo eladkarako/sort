@@ -36,46 +36,37 @@ notes:
 
 <meta name="author"                        content="Elad Karako"                      />
 <title>Sort&Unique</title>
-
 <link rel="stylesheet"                     href="index.css"   type="text/css"          crossorigin="anonymous" charset="UTF-8" media="all"  />
 <link rel="preload"                        href="index.js"    type="text/javascript"   crossorigin="anonymous" charset="UTF-8" as="script"  />
 <link rel="icon"                           href="favicon.ico" type="image/x-icon"      crossorigin="anonymous" />
 <link rel="shortcut icon"                  href="favicon.ico" type="image/x-icon"      crossorigin="anonymous" />
-
 <!-- hidden from BODY, but still in DOM ... --->
 <input id="opener"     charset="UTF-8" type="file" accept="*" />
 <a     id="downloader" charset="UTF-8" type="application/octet-stream" href="" download="t1_20221108_182911.txt">💾︎ </a>
 </head>
 <body>
-<!--
-<button data-action="alt+enter">sort and unique</button> 
-<button data-action="alt+\">inline comma, then lines</button> 
-<button data-action="alt+/">inline space, then lines</button> 
-<button data-action="alt+j">json beautify</button> 
-<button data-action="alt+k">json deep sort then beautify</button> 
-<button data-action="alt+l">clear</button> 
-<button data-action="alt+w">line wrap toggle</button> 
-<hr/>
--->
-<textarea autofocus="true" spellcheck="true" autocomplete="on" placeholder="
+<table>
+  <tbody>
+    <tr textarea><td>
+      <textarea autofocus="true" spellcheck="true" autocomplete="on" placeholder="
 👉 main functionality: 
 ־־־־־־־־־־־־־־־־־־־־־־־־־־־־־
-1. ALT/CTRL+ENTER  - 📃⬇ sort and unique text based on lines. 
+1. CTRL/ALT+ENTER  - 📃⬇ sort and unique text based on lines. 
 
-2. ALT/CTRL+,      - sort each line based on ',' splitter.
+2. CTRL/ALT+,      - inline sort by ',' - then for all lines.
 
-3. ALT/CTRL+/      - sort each line based on ' ' splitter.
+3. CTRL/ALT+/      - inline sort by ' ' - then for all lines.
 
-4. ALT/CTRL+J      - beautify JSON (supports relaxed syntax)
-5. ALT/CTRL+K      - JSON deep sort + beautify (note: null, [], {}, if any - will be placed last). 
+4. CTRL/ALT+J      - beautify JSON (supports relaxed syntax)
+5. CTRL/ALT+K      - JSON deep sort + beautify (note: null, [], {}, if any - will be placed last). 
 
-6. ALT/CTRL+L      - clear textarea. 
-7. ALT/CTRL+W      - toggle wrap-lines ON/OFF (default ON, lines all fit page without scrolling sideway).
+6. CTRL/ALT+L      - clear textarea. 
+7. CTRL/ALT+W      - toggle wrap-lines ON/OFF (default ON, lines all fit page without scrolling sideway).
 
 *️⃣ addition functionality:
 ־־־־־־־־־־־־־־־־־־־־־־־־־־־־־
-8. ALT/CTRL+O      - 📂 open single file as text, to textarea.
-9. ALT/CTRL+S      - 💾 save textarea to text-file.
+8. CTRL/ALT+O      - 📂 open single file as text, to textarea.
+9. CTRL/ALT+S      - 💾 save textarea to text-file.
 
 🎯 stuff you can access from console
 ־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־־
@@ -85,6 +76,27 @@ notes:
 - (object)   self.downloader (hidden anchor element used to generate and download a text files).
 
 " ></textarea>
+
+    </td></tr>
+    <tr buttons><td>
+      <button type="button" title="ctrl/alt+enter">sort and unique</button> 
+      <button type="button" title="ctrl/alt+,">inline comma, then lines</button> 
+      <button type="button" title="ctrl/alt+/">inline space, then lines</button> 
+      <button type="button" title="ctrl/alt+j">json beautify</button> 
+      <button type="button" title="ctrl/alt+k">json deep sort then beautify</button> 
+      <button type="button" title="ctrl/alt+l">clear</button> 
+      <button type="button" title="ctrl/alt+w">line wrap toggle</button> 
+      <button type="button" title="ctrl/alt+o">open text file</button> 
+      <button type="button" title="ctrl/alt+s">save text file</button> 
+      |
+      <button type="button" title="add tab character">add TAB character</button> 
+      |
+      <button type="button" title="to base64">to base64</button> 
+      <button type="button" title="from base64">from base64</button> 
+    </td></tr>
+  </tbody>
+</table>
+
 <script src="index.js" async="async" type="text/javascript" charset="UTF-8" loading="eager" lazyload="off" crossorigin="anonymous"></script>
 </body>
 </html>
