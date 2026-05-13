@@ -236,6 +236,7 @@ const keycodes = {
 ,"DOM_VK_K"      : 75
 ,"DOM_VK_L"      : 76
 ,"DOM_VK_O"      : 79
+,"DOM_VK_R"      : 82
 ,"DOM_VK_S"      : 83
 ,"DOM_VK_W"      : 87
 ,"DOM_VK_COMMA"  : 188
@@ -256,6 +257,9 @@ function key_handler(ev){
 
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
                  ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_O)      //CTRL+O      (same)
+
+                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_R)      //ALT+R       randomize lines
+                 ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_R)      //CTRL+R      (same)
 
                  ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_S)      //ALT+S       save textarea value to text file and download it
                  ||(true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_S)      //CTRL+S      (same)
@@ -305,6 +309,10 @@ function key_handler(ev){
                   opener.type  = "file"
                   opener.click();
                   break;
+    case keycodes.DOM_VK_R:  //KeyR
+                  console.log("randomize_lines");
+                  randomize_lines();
+                  break;
     case keycodes.DOM_VK_S:  //KeyS
                   console.log("save_textarea_to_file");
                   save_textarea_to_file();
@@ -335,33 +343,6 @@ function key_handler(ev){
 }
 
 
-/*
-function early_prevent_default(ev){ //potentially prevents browser or OS functionality related to the key, while still allow the event to continue. done very early. using capture (window get first event then it bubbles down until it reaches the textarea). the actual event keyup will be used the textarea, as a way to delay the whole event. none of the hooks is passive to be able to prevent default.
-  const is_match = (true === ev.ctrlKey && ev.keyCode === keycodes.DOM_VK_RETURN) //CTRL+ENTER  sort lines
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_RETURN) //ALT+ENTER   sort lines (same)
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_COMMA)  //ALT+,       each line first, using  ',' as separator, then sort lines
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_SLASH)  //ALT+/       each line first, using  ' ' as separator, then sort lines
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_O)      //ALT+O       open and read into textarea
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_S)      //ALT+S       save textarea value to text file and download it
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_J)      //ALT+J       json beautify (as is)
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_K)      //ALT+K       json deep sort + beautify
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_L)      //ALT+L       clear textarea
-                 ||(true === ev.altKey  && ev.keyCode === keycodes.DOM_VK_W)      //ALT+W       toggle visual line-wrap-break
-       ;
-
-  if(is_match){
-    ev.preventDefault();
-  }
-  return true;
-}
-
-self.addEventListener("keydown",            early_prevent_default , {capture:true, passive:false, once:false});
-self.addEventListener("keyup",              early_prevent_default , {capture:true, passive:false, once:false});
-self.addEventListener("keypress",           early_prevent_default , {capture:true, passive:false, once:false});
-self.document.addEventListener("keydown",   early_prevent_default , {capture:true, passive:false, once:false});
-self.document.addEventListener("keyup",     early_prevent_default , {capture:true, passive:false, once:false});
-self.document.addEventListener("keypress",  early_prevent_default , {capture:true, passive:false, once:false});
-*/
 
 textarea.addEventListener("keydown",  key_handler , {capture:false, passive:false, once:false});
 
@@ -410,6 +391,10 @@ const button_click_hook = (ev)=>{
       opener.value = "";
       opener.type  = "file"
       opener.click();
+      break;
+    case "ctrl/alt+r": //keycodes.DOM_VK_R:  //KeyR
+      console.log("randomize_lines");
+      randomize_lines();
       break;
     case "ctrl/alt+s": //keycodes.DOM_VK_S:  //KeyS
       console.log("save_textarea_to_file");
@@ -551,3 +536,75 @@ const base64_encode = (s)=>{
   }
   return out.join('');
 };
+
+
+
+
+/* a cryptographically secure shuffle. uses Fisher-Yates and WebCrypto-API.
+ * uses managed loops, rejection sampling helps to avoid modulo bias.
+*/
+
+var crypto_shuffle_in_place =(array) => {
+  const shuffled_array    = [].concat(array)        // clone so array won't be changed.
+       ,array_length      = shuffled_array.length   // Work on a shallow copy so original array remains unchanged.
+       ,random_u32_buffer = new Uint32Array(1)      // Reusable buffer for 32-bit random words from crypto.getRandomValues.
+       ,max_attempts      = 6                       // how many times to try get an unbiased random number, before using single reduction (extremely unlikely to be used).
+       ;
+
+  for (let index_to_fill = array_length - 1; index_to_fill > 0; index_to_fill--) {  // from the end, down to the 2nd element.
+    const inclusive_range_size = index_to_fill + 1;                                 // possible j values: 0..index_to_fill
+
+    // Compute the largest uint32 value we will accept to avoid modulo bias.
+    // (max_uint32 + 1) is 2^32. We take the largest multiple of inclusive_range_size
+    // that fits in 2^32, then subtract 1 to get a <= bound check.
+    const max_uint32_plus_one   = 0x100000000    // 2^32
+         ,acceptable_range_top  = Math.floor(max_uint32_plus_one / inclusive_range_size) * inclusive_range_size - 1 >>> 0
+         ;
+
+    let chosen_index  = 0
+       ,draw_accepted = false
+       ;
+
+    for (let attempt_count = 0; attempt_count < max_attempts; attempt_count+=1) {   // Try up to max_attempts times to get a random word within acceptable_range_top.
+      crypto.getRandomValues(random_u32_buffer);
+      const random_word = random_u32_buffer[0] >>> 0;                               // ensure unsigned
+
+      if (random_word <= acceptable_range_top) {
+        chosen_index  = random_word % inclusive_range_size;                         // Uniformly distributed in [0, acceptable_range_top], reduce without bias.
+        draw_accepted = true;
+        break;
+      }
+      // otherwise: reject this draw and try again
+    }
+
+    if (false === draw_accepted) {
+      // Extremely unlikely path: do one final draw and reduce.
+      // This may introduce negligible bias, but is only used if many draws kept failing.
+      crypto.getRandomValues(random_u32_buffer);
+      chosen_index = (random_u32_buffer[0] >>> 0) % inclusive_range_size;
+    }
+
+    // Swap element at index_to_fill with element at chosen_index.
+    const temp_value = shuffled_array[index_to_fill];
+    shuffled_array[index_to_fill] = shuffled_array[chosen_index];
+    shuffled_array[chosen_index] = temp_value;
+  }
+
+  return shuffled_array;
+};
+
+
+
+var randomize_lines = ()=>{
+  var array = textarea.value.replace(/\r+/gm,"").split("\n");
+  array = crypto_shuffle_in_place(array);
+  set_textarea_value( array.join("\r\n") );
+};
+
+
+
+
+
+
+
+void 0;
